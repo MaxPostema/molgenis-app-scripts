@@ -1,5 +1,6 @@
 export interface State{
   scripts: any //Script[]
+  meta: any
 }
 
 export interface Script{

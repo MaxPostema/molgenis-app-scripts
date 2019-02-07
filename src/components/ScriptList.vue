@@ -3,7 +3,7 @@
   <div>
     <b-table
       :hover="true"
-      :items="tableResources"
+      :items="tableScripts"
       :fields="fields"
       :filter="filter"
       class="text-left"
@@ -62,10 +62,12 @@ export default Vue.extend({
     return {
       fields: {
         edit: {
+          label: '',
           'class': 'compact align-middle',
           tdClass: this.cellClass
         },
         remove: {
+          label: '',
           'class': 'compact align-middle',
           tdClass: this.cellClass
         },
@@ -100,22 +102,17 @@ export default Vue.extend({
   },
   computed: {
     ...mapGetters(['scripts']),
-    tableResources () {
+    tableScripts () {
       return this.scripts.map(
         script => Object.assign({}, script)
       )
     }
   },
-  created () {
-    store.dispatch('requestScripts')
-  },
   components: {},
   methods: {
     editScript: function (record, index) {
-      console.log(record)
-      console.log(index)
-      window.location.assign(window.location.origin + '/plugin/data-row-edit/sys_scr_Script/' + index)
-    },
+      this.$router.push({ name: 'editscript', params: { id: index } })
+    }
   }
 })
 </script>

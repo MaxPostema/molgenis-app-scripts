@@ -4,5 +4,15 @@
   </div>
 </template>
 
+<script>
+import store from './store/store'
+export default {
+  name: 'App',
+  created () {
+    store.dispatch('requestScripts')
+  }
+}
+</script>
+
 <style>
 </style>

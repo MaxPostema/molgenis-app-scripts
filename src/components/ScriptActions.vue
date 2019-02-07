@@ -1,10 +1,7 @@
 // @flow
 <template>
   <div class="navigator-actions">
-    <b-dropdown size="sm" variant="secondary" text="New script">
-      <b-dropdown-item-button>New script</b-dropdown-item-button>
-      <b-dropdown-item-button>New parameter</b-dropdown-item-button>
-    </b-dropdown>
+    <b-button size="sm" variant="secondary" @click="createNewScript">New script</b-button>
   </div>
 </template>
 
@@ -20,7 +17,8 @@ export default Vue.extend({
   },
   components: {},
   methods: {
-    test () {
+    createNewScript () {
+      this.$router.push({ name: 'newscript' })
     }
   }
 })

@@ -6,6 +6,8 @@ import EditScript from './views/EditScript.vue'
 Vue.use(Router)
 
 export default new Router({
+  mode: 'history',
+  base: '/',
   routes: [
     {
       path: '/',
@@ -13,9 +15,15 @@ export default new Router({
       component: Scripts
     },
     {
-      path: '/edit/:id',
-      name: 'scripts',
+      path: '/edit/',
+      name: 'newscript',
       component: EditScript
-    }
-  ]
+    },
+    {
+      path: '/edit/:id',
+      name: 'editscript',
+      component: EditScript
+    },
+  ],
 })
+

@@ -1,4 +1,5 @@
 <template>
+  <!--
   <b-modal
     id="modalDeleteScript"
     title="confirmation"
@@ -9,6 +10,8 @@
     @ok="deleteSelectedResources">
     {{ 'delete-confirmation-text' | i18n }}
   </b-modal>
+  -->
+  <div />
 </template>
 
 <script>

@@ -1,7 +1,8 @@
 import State from '@/types/state'
 
 const state: State = {
-  scripts: []
+  scripts: [],
+  meta: []
 }
 
 export default state
