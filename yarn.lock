@@ -9127,7 +9127,7 @@ vue-router@^3.0.1:
   resolved "https://registry.yarnpkg.com/vue-router/-/vue-router-3.0.2.tgz#dedc67afe6c4e2bc25682c8b1c2a8c0d7c7e56be"
   integrity sha512-opKtsxjp9eOcFWdp6xLQPLmRGgfM932Tl56U9chYTnoWqKxQ8M20N7AkdEbM5beUh6wICoFGYugAX9vQjyJLFg==
 
-"vue-select@github:ConnorStroomberg/vue-select#release/patch-for-update-issue":
+vue-select@ConnorStroomberg/vue-select.git#release/patch-for-update-issue:
   version "2.4.0"
   resolved "https://codeload.github.com/ConnorStroomberg/vue-select/tar.gz/3bee82380e07634b4d5d7d1c2450d7101581a9b0"
 

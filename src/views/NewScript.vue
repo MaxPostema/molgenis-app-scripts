@@ -3,15 +3,20 @@
     <b-alert v-if="validationError" variant="danger" show dismissible>
       Error
     </b-alert>
-    <h1>{{form.name}}</h1>
-    <CodeEditor v-if="loaded" @saveAndRun="onSaveAndRun" @valueChange="onValueChange" :initialData="form.content" showSaveAndRun="true" />
     <b-row class="mb-3">
-      <b-col sm="4" class="border-right">
+      <b-col sm="9">
+        <label>Name *</label>
+        <b-form-input id="name" type="text" v-model="form.name"/>
+      </b-col>
+      <b-col sm="3">
         <label>Type</label>
         <b-form-select v-model="form.type">
           <option v-for="(type, index) in scriptTypes" :key="`type-${index}`" :value="type">{{type}}</option>
         </b-form-select>
       </b-col>
+    </b-row>
+    <CodeEditor @valueChange="onValueChange" />
+    <b-row class="mb-3">
       <b-col sm="4" class="border-right">
         <label>Result file extension</label>
         <b-form-input id="name" type="text" v-model='form.resultFileExtension' placeholder="png"/>
@@ -19,15 +24,15 @@
       <b-col sm="4">
         <label class="mb-3">Generate security token</label>
         <b-form-radio-group id="generateToken" v-model="form.generateToken" name="generateToken">
-          <b-form-radio :value="true">True</b-form-radio>
-          <b-form-radio :value="false">False</b-form-radio>
+          <b-form-radio value="true">True</b-form-radio>
+          <b-form-radio value="false">False</b-form-radio>
           <b-form-radio value="">N/A</b-form-radio>
         </b-form-radio-group>
-        <small v-if="form.generateToken">Please use: <code>${molgenisToken}</code></small>
+        <small v-if="form.generateToken=='true'">Please use: <code>${molgenisToken}</code></small>
+      </b-col>
+      <b-col sm="4">
       </b-col>
     </b-row>
-    <div class="mb-4">
-    </div>
     <button id="cancel-btn" class="btn btn-secondary mr-3" type="reset" @click.prevent="onCancel">Cancel</button>
     <button id="save-btn" class="btn btn-primary" type="submit" @click.prevent="onSubmit">Save</button>
   </div>
@@ -42,7 +47,7 @@ export default {
   name: 'NewScript',
   data () {
     return {
-      id: 0,
+      loaded: false,
       validationError: false,
       form: {
         name: '',
@@ -55,44 +60,18 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['scriptTypes', 'scripts', 'loaded'])
+    ...mapGetters(['scriptTypes'])
   },
   watch: {
-    scripts: function (scripts) {
-      this.updateForm(scripts)
+    scriptTypes: function (types) {
+      this.form.type = types[0]
     }
   },
   methods: {
-    updateForm (data) {
-      if (data.hasOwnProperty('items')) {
-        let scriptData = []
-        if (data.items.length > 0) {
-          scriptData = data.items.find(obj => {
-            return obj.name === this.id
-          })
-        }
-        this.form.name = scriptData.name
-        this.form.type = scriptData.type.name
-        this.form.generateToken = scriptData.generateToken
-        this.form.resultFileExtension = scriptData.resultFileExtension
-        this.form.content = scriptData.content
-        this.form.parameters = scriptData.parameters.map(parameter => parameter.name)
-      }
-    },
-    onSaveAndRun (event) {
-      console.log('1')
-      store.dispatch('addParameters', this.form.parameters).then(() => {
-        console.log('2')
-        store.dispatch('editScript', this.form).then(() => {
-          console.log('3')
-          window.location.href = '/scripts/' + this.form.name + '/start'
-        })
-      })
-    },
     onSubmit () {
       // FIXME: add form validation
       store.dispatch('addParameters', this.form.parameters).then(() => {
-        store.dispatch('editScript', this.form)
+        store.dispatch('newScript', this.form)
       })
       this.$router.push({ name: 'scripts' })
     },
@@ -105,8 +84,7 @@ export default {
     }
   },
   created () {
-    this.id = this.$route.params.id
-    this.updateForm(this.scripts)
+    this.form.type = this.scriptTypes[0]
   },
   components: {
     CodeEditor

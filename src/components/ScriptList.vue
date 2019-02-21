@@ -1,9 +1,8 @@
-// @flow
 <template>
-  <div>
+  <div >
     <b-table
       :hover="true"
-      :items="tableScripts"
+      :items="scripts.items"
       :fields="fields"
       :filter="filter"
       class="text-left"
@@ -19,9 +18,7 @@
       <template
         slot="remove"
         slot-scope="data">
-        <b-button size="sm" variant="danger">
-          <font-awesome-icon icon="trash" size="lg" />
-        </b-button>
+        <RemoveButton :name="data.item.name" />
       </template>
       <template
         slot="selected"
@@ -45,7 +42,7 @@
       <template
         slot="execute"
         slot-scope="data">
-        <b-button size="sm" variant="secondary">Execute</b-button>
+        <ExecuteButton :name="data.item.name" />
       </template>
     </b-table>
   </div>
@@ -55,6 +52,10 @@
 import Vue from 'vue'
 import store from '../store/store'
 import { mapGetters } from 'vuex'
+import { ReadyState } from '@/types/state'
+// @ts-ignore
+import ExecuteButton from '../components/ExecuteButton'
+import RemoveButton from './RemoveButton'
 
 export default Vue.extend({
   name: 'ScriptList',
@@ -101,17 +102,12 @@ export default Vue.extend({
     }
   },
   computed: {
-    ...mapGetters(['scripts']),
-    tableScripts () {
-      return this.scripts.map(
-        script => Object.assign({}, script)
-      )
-    }
+    ...mapGetters(['scripts'])
   },
-  components: {},
+  components: { ExecuteButton, RemoveButton },
   methods: {
-    editScript: function (record, index) {
-      this.$router.push({ name: 'editscript', params: { id: index } })
+    editScript: function (record) {
+      this.$router.push({ name: 'editscript', params: { id: record.name } })
     }
   }
 })

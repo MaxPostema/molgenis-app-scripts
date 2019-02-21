@@ -11,7 +11,17 @@
   },
   "vue": {
     "devServer": {
-      "proxy": "http://localhost:8080"
+      "proxy": {
+        "^/api": {
+          "target": "http://localhost:8080"
+        },
+        "^/scripts": {
+          "target": "http://localhost:8080"
+        },
+        "^/menu": {
+          "target": "http://localhost:8080"
+        }
+      }
     }
   },
   "dependencies": {

@@ -1,8 +1,9 @@
-import State from '@/types/state'
+import { State, ReadyState } from '@/types/state'
 
 const state: State = {
   scripts: [],
-  meta: []
+  scriptTypes: [],
+  loaded: false
 }
 
 export default state

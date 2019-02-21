@@ -1,4 +1,3 @@
-// @flow
 <template>
   <div class="navigator-actions">
     <b-button size="sm" variant="secondary" @click="createNewScript">New script</b-button>
