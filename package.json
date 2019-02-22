@@ -18,6 +18,12 @@
         "^/scripts": {
           "target": "http://localhost:8080"
         },
+        "^/js": {
+          "target": "http://localhost:8080"
+        },
+        "^/css": {
+          "target": "http://localhost:8080"
+        },
         "^/menu": {
           "target": "http://localhost:8080"
         }

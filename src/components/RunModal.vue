@@ -27,7 +27,7 @@ export default {
   },
   watch: {
     showModal (changedValue) {
-      this.$emit('input', changedValue);
+      this.$emit('input', changedValue)
     },
     value (changedValue) {
       this.showModal = changedValue
@@ -36,13 +36,11 @@ export default {
   methods: {
     run () {
       this.showModal = false
-      // let parameters = {}
-      // this.parameters.forEach((key, index) => { parameters[key] = this.values[index] })
       let url = '/scripts/' + this.name + '/start?'
       this.parameters.forEach((key, index) => {
         url += encodeURIComponent(key) + '=' + encodeURIComponent(this.values[index]) + '&'
       })
-      window.open(url, '_blank');
+      window.open(url, '_blank')
     }
   }
 }

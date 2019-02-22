@@ -6,7 +6,10 @@
     <b-row class="mb-3">
       <b-col sm="9">
         <label>Name *</label>
-        <b-form-input id="name" type="text" v-model="form.name"/>
+        <b-form-input :state="nameValidation" id="name" type="text" v-model="form.name"/>
+        <b-form-invalid-feedback :state="nameValidation">
+          This field is required
+        </b-form-invalid-feedback>
       </b-col>
       <b-col sm="3">
         <label>Type</label>
@@ -47,7 +50,6 @@ export default {
   name: 'NewScript',
   data () {
     return {
-      loaded: false,
       validationError: false,
       form: {
         name: '',
@@ -60,7 +62,10 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['scriptTypes'])
+    ...mapGetters(['scriptTypes']),
+    nameValidation () {
+      return this.form.name.length > 0
+    }
   },
   watch: {
     scriptTypes: function (types) {
