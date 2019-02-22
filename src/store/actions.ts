@@ -1,4 +1,3 @@
-import { State, ReadyState } from '@/types/state'
 // @ts-ignore
 import api from '@molgenis/molgenis-api-client'
 
@@ -12,20 +11,18 @@ export default {
       })
 
       api.get('/api/v2/sys_scr_Script?num=10000').then((response: any) => {
-console.log(response)
         commit('loadScripts', response)
         commit('setLoadedState', true)
-        resolve();
-      }, (e:any) => {
-        console.log(e)
-        reject()
+        resolve()
+      }, (error: any) => {
+        reject(error)
       })
     })
   },
   editScript ({ dispatch, commit } : any, script: any) {
     return new Promise((resolve, reject) => {
       const options = {
-        body: JSON.stringify({entities: [script]})
+        body: JSON.stringify({ entities: [script] })
       }
       api.put('/api/v2/sys_scr_Script', options).then((response: any) => {
         dispatch('requestScripts')
@@ -54,33 +51,33 @@ console.log(response)
     }, () => {
     })
   },
-  addParameters({ dispatch, commit } : any, parameters: any) {
+  addParameters ({ dispatch, commit } : any, parameters: any) {
     return new Promise((resolve, reject) => {
       api.get('/api/v2/sys_scr_ScriptParameter?num=10000').then((response: any) => {
         const existingParameters = response.items.map((parameter:any) => { return parameter.name })
         existingParameters.push('molgenisToken')
 
         // Filter out pre existing parameters and commit only the unique new ones
-        existingParameters.map((toRemove:string)=> {
-          parameters = parameters.filter((parameter:string) => parameter !== toRemove);
+        existingParameters.map((toRemove:string) => {
+          parameters = parameters.filter((parameter:string) => parameter !== toRemove)
         })
 
-        if(parameters.length > 0){
+        if (parameters.length > 0) {
           const options = {
             body: JSON.stringify({ entities:
-                parameters.map((parameter: any) => { return { 'name': parameter } } )
+                parameters.map((parameter: any) => { return { 'name': parameter } })
             })
           }
 
           api.post('/api/v2/sys_scr_ScriptParameter', options).then((response: any) => {
             resolve()
-          }, (error:any) => {
+          }, (error: any) => {
             reject(error)
           })
-        }else{
+        } else {
           resolve()
         }
-      }, (error:any) => {
+      }, (error: any) => {
         reject(error)
       })
     })

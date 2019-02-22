@@ -1,5 +1,5 @@
 <template>
-  <div >
+  <div>
     <b-table
       :hover="true"
       :items="scripts.items"
@@ -11,7 +11,7 @@
       <template
         slot="edit"
         slot-scope="data">
-        <b-button size="sm" variant="secondary">
+        <b-button :name="data.item.name" size="sm" variant="secondary">
           <font-awesome-icon icon="edit" size="lg" />
         </b-button>
       </template>
@@ -50,7 +50,6 @@
 
 <script>
 import Vue from 'vue'
-import store from '../store/store'
 import { mapGetters } from 'vuex'
 import { ReadyState } from '@/types/state'
 // @ts-ignore
@@ -64,37 +63,31 @@ export default Vue.extend({
       fields: {
         edit: {
           label: '',
-          'class': 'compact align-middle',
-          tdClass: this.cellClass
+          'class': 'compact align-middle'
         },
         remove: {
           label: '',
-          'class': 'compact align-middle',
-          tdClass: this.cellClass
+          'class': 'compact align-middle'
         },
         name: {
           label: 'Name',
           sortable: true,
-          'class': 'align-middle',
-          tdClass: this.cellClass
+          'class': 'align-middle'
         },
         parameters: {
           label: 'Parameters',
           sortable: false,
-          'class': 'align-middle',
-          tdClass: this.cellClass
+          'class': 'align-middle'
         },
         resultFileExtension: {
           label: 'Result file extension',
           sortable: false,
-          'class': 'compact align-middle',
-          tdClass: this.cellClass
+          'class': 'compact align-middle'
         },
         execute: {
           label: '',
           sortable: false,
-          'class': 'compact',
-          tdClass: this.cellClass
+          'class': 'compact'
         }
       },
       hover: true,
@@ -102,11 +95,11 @@ export default Vue.extend({
     }
   },
   computed: {
-    ...mapGetters(['scripts', 'loaded']),
+    ...mapGetters(['scripts', 'loaded'])
   },
   components: { ExecuteButton, RemoveButton },
   methods: {
-    editScript: function (record) {
+    editScript (record) {
       this.$router.push({ name: 'editscript', params: { id: record.name } })
     },
     simpleParameters (parameters) {

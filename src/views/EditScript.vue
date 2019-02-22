@@ -60,7 +60,7 @@ export default {
     ...mapGetters(['scriptTypes', 'scripts', 'loaded'])
   },
   watch: {
-    scripts: function (scripts) {
+    scripts (scripts) {
       this.updateForm(scripts)
     }
   },

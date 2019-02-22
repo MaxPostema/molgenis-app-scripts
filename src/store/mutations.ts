@@ -11,5 +11,4 @@ export default {
   setLoadedState (state: State, loaded: boolean) {
     state.loaded = loaded
   }
-
 }

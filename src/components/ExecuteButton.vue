@@ -37,11 +37,11 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['loaded']),
+    ...mapGetters(['loaded'])
   },
   components: { RunModal },
   methods: {
-    execute (event) {
+    execute () {
       if (this.doSave) {
         console.log('dosave')
         store.dispatch('addParameters', this.form.parameters).then(() => {
@@ -58,10 +58,9 @@ export default {
       if (this.parameters.length > 0) {
         this.showModal = true
       } else {
-        window.open('/scripts/' + this.name + '/start', '_blank');
+        window.open('/scripts/' + this.name + '/start', '_blank')
       }
     }
   }
 }
 </script>
-
