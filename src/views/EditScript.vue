@@ -4,7 +4,9 @@
       Error
     </b-alert>
     <h1>{{form.name}}</h1>
-    <CodeEditor v-if="loaded" @saveAndRun="onSaveAndRun" @valueChange="onValueChange" :initialData="form.content" showSaveAndRun="true" />
+    <CodeEditor v-if="loaded" @valueChange="onValueChange" :initialData="form.content">
+      <ExecuteButton :doSave="true" :form="form" size="sm" :parameters="form.parameters" :name="form.name">Save and Run</ExecuteButton>
+    </CodeEditor>
     <b-row class="mb-3">
       <b-col sm="4" class="border-right">
         <label>Type</label>
@@ -14,7 +16,7 @@
       </b-col>
       <b-col sm="4" class="border-right">
         <label>Result file extension</label>
-        <b-form-input id="name" type="text" v-model='form.resultFileExtension' placeholder="png"/>
+        <b-form-input id="name" type="text" v-model='form.resultFileExtension' placeholder=""/>
       </b-col>
       <b-col sm="4">
         <label class="mb-3">Generate security token</label>
@@ -26,10 +28,8 @@
         <small v-if="form.generateToken">Please use: <code>${molgenisToken}</code></small>
       </b-col>
     </b-row>
-    <div class="mb-4">
-    </div>
     <button id="cancel-btn" class="btn btn-secondary mr-3" type="reset" @click.prevent="onCancel">Cancel</button>
-    <button id="save-btn" class="btn btn-primary" type="submit" @click.prevent="onSubmit">Save</button>
+    <button id="save-btn" class="btn btn-primary mr-3" type="submit" @click.prevent="onSubmit">Save</button>
   </div>
 </template>
 
@@ -37,6 +37,8 @@
 import { mapGetters } from 'vuex'
 import store from '../store/store'
 import CodeEditor from '../components/CodeEditor'
+// @ts-ignore
+import ExecuteButton from '../components/ExecuteButton'
 
 export default {
   name: 'NewScript',
@@ -79,16 +81,6 @@ export default {
         this.form.parameters = scriptData.parameters.map(parameter => parameter.name)
       }
     },
-    onSaveAndRun (event) {
-      console.log('1')
-      store.dispatch('addParameters', this.form.parameters).then(() => {
-        console.log('2')
-        store.dispatch('editScript', this.form).then(() => {
-          console.log('3')
-          window.location.href = '/scripts/' + this.form.name + '/start'
-        })
-      })
-    },
     onSubmit () {
       // FIXME: add form validation
       store.dispatch('addParameters', this.form.parameters).then(() => {
@@ -109,7 +101,7 @@ export default {
     this.updateForm(this.scripts)
   },
   components: {
-    CodeEditor
+    CodeEditor, ExecuteButton
   }
 }
 </script>

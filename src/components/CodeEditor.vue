@@ -8,9 +8,8 @@
                       :formState="codeEditorState"
                       :options="options"
                       @valueChange="onValueChanged"></form-component>
-      <button v-if="showSaveAndRun" id="save-run-btn" class="btn btn-primary btn-sm position-absolute" @click="onSaveRun"> <font-awesome-icon class='mr-2' icon="play" size="lg" /> Save and Run</button>
+      <span id="in-corner"><slot></slot></span>
     </div>
-    
     <div class="mb-3">
       <small v-if="parameters.length>0">Exposed Parameters <b-badge class="mr-1" v-for="(parameter, index) in parameters" :key="`type-${index}`" >{{parameter}}</b-badge></small>
     </div>
@@ -22,7 +21,7 @@ import { FormComponent } from '@molgenis/molgenis-ui-form'
 
 export default {
   name: 'CodeEditor',
-  props: ['initialData', 'showSaveAndRun'],
+  props: ['initialData'],
   data () {
     return {
       showField: true,
@@ -51,9 +50,6 @@ export default {
     }
   },
   methods: {
-    onSaveRun (event) {
-      this.$emit('saveAndRun', event)
-    },
     onValueChanged (event) {
       this.codeEditorData = event
       const code = event.content
@@ -81,7 +77,8 @@ export default {
 </script>
 
 <style scoped>
-  >>> #save-run-btn {
+  >>> #in-corner {
+    position: absolute;
     bottom: 2rem;
     right: 1rem;
   }

@@ -37,12 +37,12 @@
       <template
         slot="parameters"
         slot-scope="data">
-        <span v-for="(parameter, key) in data.item.parameters" :key="key"><span v-if="key!=0">,</span> {{ parameter.name }}</span>
+        <span v-for="(parameter, key) in data.item.parameters" :key="`parameter-${key}`"><span v-if="key!=0">,</span> {{ parameter.name }}</span>
       </template>
       <template
         slot="execute"
         slot-scope="data">
-        <ExecuteButton :name="data.item.name" />
+        <ExecuteButton v-if="loaded" size="sm" :parameters="simpleParameters(data.item.parameters)" :name="data.item.name">Run</ExecuteButton>
       </template>
     </b-table>
   </div>
@@ -102,12 +102,15 @@ export default Vue.extend({
     }
   },
   computed: {
-    ...mapGetters(['scripts'])
+    ...mapGetters(['scripts', 'loaded']),
   },
   components: { ExecuteButton, RemoveButton },
   methods: {
     editScript: function (record) {
       this.$router.push({ name: 'editscript', params: { id: record.name } })
+    },
+    simpleParameters (parameters) {
+      return parameters.map((parameter) => { return parameter.name })
     }
   }
 })
