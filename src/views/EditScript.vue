@@ -1,7 +1,7 @@
 <template>
   <div class="container">
-    <b-alert v-if="validationError" variant="danger" show dismissible>
-      Error
+    <b-alert v-if="showValidationError" variant="danger" show dismissible>
+      Error on saving data
     </b-alert>
     <h1>{{form.name}}</h1>
     <CodeEditor v-if="loaded" @valueChange="onValueChange" :initialData="form.content">
@@ -45,7 +45,7 @@ export default {
   data () {
     return {
       id: 0,
-      validationError: false,
+      showValidationError: false,
       form: {
         name: '',
         type: '',
@@ -82,11 +82,15 @@ export default {
       }
     },
     onSubmit () {
-      // FIXME: add form validation
       store.dispatch('addParameters', this.form.parameters).then(() => {
-        store.dispatch('editScript', this.form)
-      })
-      this.$router.push({ name: 'scripts' })
+        store.dispatch('editScript', this.form).then(() => {
+          this.$router.push({ name: 'scripts' })
+        }, (error) => { this.onError(error) })
+      }, (error) => { this.onError(error) })
+    },
+    onError (error) {
+      this.showValidationError = true
+      console.log('Error: ' + error.errors[0].message)
     },
     onCancel () {
       this.$router.push({ name: 'scripts' })

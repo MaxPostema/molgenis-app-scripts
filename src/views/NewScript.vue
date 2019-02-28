@@ -1,14 +1,14 @@
 <template>
   <div class="container">
-    <b-alert v-if="validationError" variant="danger" show dismissible>
-      Error
+    <b-alert v-if="showValidationError" variant="danger" show dismissible>
+      Error on saving data
     </b-alert>
     <b-row class="mb-3">
       <b-col sm="9">
         <label>Name *</label>
         <b-form-input :state="nameValidation" id="name" type="text" v-model="form.name"/>
         <b-form-invalid-feedback :state="nameValidation">
-          This field is required
+          This field is required, and needs to be unique.
         </b-form-invalid-feedback>
       </b-col>
       <b-col sm="3">
@@ -37,7 +37,7 @@
       </b-col>
     </b-row>
     <button id="cancel-btn" class="btn btn-secondary mr-3" type="reset" @click.prevent="onCancel">Cancel</button>
-    <button id="save-btn" class="btn btn-primary" type="submit" @click.prevent="onSubmit">Save</button>
+    <button :disabled="nameValidation" d="save-btn" class="btn btn-primary" type="submit" @click.prevent="onSubmit">Save</button>
   </div>
 </template>
 
@@ -50,7 +50,8 @@ export default {
   name: 'NewScript',
   data () {
     return {
-      validationError: false,
+      showValidationError: false,
+      nameChanged: false,
       form: {
         name: '',
         type: '',
@@ -62,23 +63,44 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['scriptTypes']),
+    ...mapGetters(['scriptTypes', 'scripts', 'loaded']),
     nameValidation () {
-      return this.form.name.length > 0
+      return this.nameChanged ? (this.form.name.length > 0 && this.isUniqueName) : null
+    },
+    formName () {
+      return this.form.name
+    },
+    isUniqueName () {
+      if (this.loaded) {
+        return !this.scripts.items.some((script) => {
+          return this.form.name === script.name
+        })
+      }
+      return true
     }
   },
   watch: {
+    formName: function () {
+      this.nameChanged = true
+    },
     scriptTypes: function (types) {
       this.form.type = types[0]
     }
   },
   methods: {
     onSubmit () {
-      // FIXME: add form validation
-      store.dispatch('addParameters', this.form.parameters).then(() => {
-        store.dispatch('newScript', this.form)
-      })
-      this.$router.push({ name: 'scripts' })
+      this.nameChanged = true
+      if (this.nameValidation && form.name !== '') {
+        store.dispatch('addParameters', this.form.parameters).then(() => {
+          store.dispatch('newScript', this.form).then(() => {
+            this.$router.push({ name: 'scripts' })
+          }, (error) => { this.onError(error) })
+        }, (error) => { this.onError(error) })
+      }
+    },
+    onError (error) {
+      this.showValidationError = true
+      console.log('Error: ' + error.errors[0].message)
     },
     onCancel () {
       this.$router.push({ name: 'scripts' })

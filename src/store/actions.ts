@@ -5,12 +5,14 @@ export default {
   requestScripts ({ dispatch, commit } : any) {
     return new Promise((resolve, reject) => {
       api.get('/api/v2/sys_scr_ScriptType?num=10000').then((response: any) => {
+        // console.log(response)
         commit('loadScriptTypes', response.items.map((type: any) => {
           return type.name
         }))
       })
 
       api.get('/api/v2/sys_scr_Script?num=10000').then((response: any) => {
+        // console.log(response)
         commit('loadScripts', response)
         commit('setLoadedState', true)
         resolve()

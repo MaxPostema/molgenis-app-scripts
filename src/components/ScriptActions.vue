@@ -15,6 +15,12 @@ export default Vue.extend({
   },
   components: {},
   methods: {
+    test () {
+      return 4
+    },
+    simpleParameters (parameters) {
+      return parameters.map((parameter) => { return parameter.name })
+    },
     createNewScript () {
       this.$router.push({ name: 'newscript' })
     }

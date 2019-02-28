@@ -5,10 +5,8 @@
   </div>
 </template>
 
-<script lang="ts">
-// @ts-ignore
+<script>
 import ScriptActions from '../components/ScriptActions'
-// @ts-ignore
 import ScriptList from '../components/ScriptList'
 
 export default {
