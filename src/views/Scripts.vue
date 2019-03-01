@@ -1,18 +1,18 @@
 <template>
   <div class="container">
-    <ScriptActions />
+    <NewButton />
     <ScriptList />
   </div>
 </template>
 
 <script>
-import ScriptActions from '../components/ScriptActions'
+import NewButton from '../components/NewButton'
 import ScriptList from '../components/ScriptList'
 
 export default {
   name: 'Scripts',
   components: {
-    ScriptList, ScriptActions
+    ScriptList, NewButton
   }
 }
 </script>

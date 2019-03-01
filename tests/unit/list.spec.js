@@ -1,10 +1,13 @@
 import { shallowMount, createLocalVue } from '@vue/test-utils'
 import Vuex from 'vuex'
 import ScriptList from '../../src/components/ScriptList'
+import RemoveButton from '../../src/components/RemoveButton'
 import * as schemas from './test-schemas'
+import BootstrapVue from 'bootstrap-vue'
 
 const localVue = createLocalVue()
 localVue.use(Vuex)
+localVue.use(BootstrapVue)
 
 describe('Components/ScriptList.vue', () => {
   let getters
@@ -27,8 +30,39 @@ describe('Components/ScriptList.vue', () => {
       stubs: ['b-table']
     })
     const parameters = schemas.Script.items[3].parameters
-    console.log(wrapper.vm.simpleParameters)
-
     expect(wrapper.vm.simpleParameters(parameters)).toEqual(['x', 'y', 'age', 'name'])
   })
+})
+
+describe('Components/RemoveButton.vue', () => {
+  let store = jest.fn()
+
+  it('Opens dialog on click', (done) => {
+    const wrapper = shallowMount(RemoveButton, {
+      localVue,
+      stubs: ['font-awesome-icon']
+    })
+    expect(wrapper.vm.$data.modalShow).toBeFalsy()
+    console.log('--------')
+    console.log(wrapper.html())
+
+    wrapper.find('.remove').trigger('click')
+
+    // localVue.nextTick(() => {
+    setTimeout(function() {
+      expect(wrapper.vm.$data.modalShow).toBeTruthy()
+      done()
+    },500)
+    // })
+
+  })
+/*
+  it('Mutates store on remove click', () => {
+    const wrapper = shallowMount(RemoveButton, {
+      store,
+      localVue,
+      stubs: ['font-awesome-icon']
+    })
+  })
+  */
 })

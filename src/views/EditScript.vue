@@ -41,7 +41,7 @@ import CodeEditor from '../components/CodeEditor'
 import ExecuteButton from '../components/ExecuteButton'
 
 export default {
-  name: 'NewScript',
+  name: 'EditScript',
   data () {
     return {
       id: 0,

@@ -9,18 +9,12 @@ import Vue from 'vue'
 import { mapGetters } from 'vuex'
 
 export default Vue.extend({
-  name: 'ScriptList',
+  name: 'NewButton',
   computed: {
     ...mapGetters(['scripts'])
   },
   components: {},
   methods: {
-    test () {
-      return 4
-    },
-    simpleParameters (parameters) {
-      return parameters.map((parameter) => { return parameter.name })
-    },
     createNewScript () {
       this.$router.push({ name: 'newscript' })
     }
