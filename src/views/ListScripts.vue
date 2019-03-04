@@ -1,7 +1,10 @@
 <template>
-  <div>
+  <div class="container">
+    <div class="navigator-actions">
+      <b-button class="mb-3" size="sm" variant="secondary" @click="createNewScript">New script</b-button>
+    </div>
     <b-modal v-model="showRemoveModal"
-             id="removeScript"
+             id="removeScriptModal"
              title="Confirm Deletion"
              ok-title="Delete"
              ok-variant="danger"
@@ -26,7 +29,7 @@
       <template
         slot="remove"
         slot-scope="data">
-        <b-button size="sm" variant="danger" @click="doOpenModal(data.item.name)">
+        <b-button class="removeButton" size="sm" variant="danger" @click="doOpenModal(data.item.name)">
           <font-awesome-icon icon="trash" size="lg" />
         </b-button>
       </template>
@@ -100,10 +103,6 @@ export default Vue.extend({
   },
   components: { ExecuteButton },
   methods: {
-    doOpenModal (toRemove) {
-      this.confirmedToRemove = toRemove
-      this.showRemoveModal = !this.showRemoveModal
-    },
     editScript (record) {
       this.$router.push({ name: 'editscript', params: { id: record.name } })
     },
@@ -112,9 +111,16 @@ export default Vue.extend({
         return parameter.name
       })
     },
+    doOpenModal (toRemove) {
+      this.confirmedToRemove = toRemove
+      this.showRemoveModal = !this.showRemoveModal
+    },
     confirmedRemove () {
       this.$store.dispatch('removeScript', this.confirmedToRemove)
       this.confirmedToRemove = ''
+    },
+    createNewScript () {
+      this.$router.push({ name: 'newscript' })
     }
   }
 })

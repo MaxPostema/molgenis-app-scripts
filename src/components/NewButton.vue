@@ -1,19 +1,14 @@
 <template>
   <div class="navigator-actions">
-    <b-button size="sm" variant="secondary" @click="createNewScript">New script</b-button>
+    <b-button class="mb-2" size="sm" variant="secondary" @click="createNewScript">New script</b-button>
   </div>
 </template>
 
 <script>
 import Vue from 'vue'
-import { mapGetters } from 'vuex'
 
 export default Vue.extend({
   name: 'NewButton',
-  computed: {
-    ...mapGetters(['scripts'])
-  },
-  components: {},
   methods: {
     createNewScript () {
       this.$router.push({ name: 'newscript' })
@@ -21,9 +16,3 @@ export default Vue.extend({
   }
 })
 </script>
-
-<style scoped>
-  .navigator-actions{
-    margin-bottom: 2rem;
-  }
-</style>

@@ -43,7 +43,6 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import store from '../store/store'
 import CodeEditor from '../components/CodeEditor'
 
 export default {
@@ -91,16 +90,15 @@ export default {
     onSubmit () {
       this.nameChanged = true
       if (this.nameValidation && this.form.name !== '') {
-        store.dispatch('addParameters', this.form.parameters).then(() => {
-          store.dispatch('newScript', this.form).then(() => {
-            this.$router.push({ name: 'scripts' })
-          }, (error) => { this.onError(error) })
-        }, (error) => { this.onError(error) })
+        this.$store.dispatch('newParametersAndScripts', this.form).then(() => {
+          this.$router.push({ name: 'scripts' })
+        }, (error) => {
+          this.onError(error)
+        })
       }
     },
-    onError (error) {
+    onError () {
       this.showValidationError = true
-      console.log('Error: ' + error.errors[0].message)
     },
     onCancel () {
       this.$router.push({ name: 'scripts' })

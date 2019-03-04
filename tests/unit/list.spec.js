@@ -1,7 +1,6 @@
-import { shallowMount, createLocalVue } from '@vue/test-utils'
+import { mount, createLocalVue } from '@vue/test-utils'
 import Vuex from 'vuex'
-import ScriptList from '../../src/components/ScriptList'
-import RemoveButton from '../../src/components/RemoveButton'
+import ListScripts from '../../src/views/ListScripts'
 import * as schemas from './test-schemas'
 import BootstrapVue from 'bootstrap-vue'
 
@@ -9,9 +8,10 @@ const localVue = createLocalVue()
 localVue.use(Vuex)
 localVue.use(BootstrapVue)
 
-describe('Components/ScriptList.vue', () => {
+describe('views/ListScript.vue', () => {
   let getters
   let store
+  let wrapper
 
   beforeEach(() => {
     getters = {
@@ -21,48 +21,33 @@ describe('Components/ScriptList.vue', () => {
     store = new Vuex.Store({
       getters
     })
+    store.dispatch = jest.fn()
+    wrapper = mount(ListScripts, {
+      store,
+      localVue,
+      stubs: ['font-awesome-icon']
+    })
   })
 
   it('simpleParameters simplifies api item parameter list', () => {
-    const wrapper = shallowMount(ScriptList, {
-      store,
-      localVue,
-      stubs: ['b-table']
-    })
     const parameters = schemas.Script.items[3].parameters
     expect(wrapper.vm.simpleParameters(parameters)).toEqual(['x', 'y', 'age', 'name'])
   })
-})
 
-describe('Components/RemoveButton.vue', () => {
-  let store = jest.fn()
-
-  it('Opens dialog on click', (done) => {
-    const wrapper = shallowMount(RemoveButton, {
-      localVue,
-      stubs: ['font-awesome-icon']
-    })
-    expect(wrapper.vm.$data.modalShow).toBeFalsy()
-    console.log('--------')
-    console.log(wrapper.html())
-
-    wrapper.find('.remove').trigger('click')
-
-    // localVue.nextTick(() => {
-    setTimeout(function() {
-      expect(wrapper.vm.$data.modalShow).toBeTruthy()
-      done()
-    },500)
-    // })
-
+  it('will show a confirmation modal on remove button click', () => {
+    expect(wrapper.vm.$data.confirmedToRemove).toBe('')
+    expect(wrapper.vm.$data.showRemoveModal).toBeFalsy()
+    wrapper.findAll('.removeButton').at(0).trigger('click')
+    expect(wrapper.vm.$data.confirmedToRemove).toBe('Hello World')
+    expect(wrapper.vm.$data.showRemoveModal).toBeTruthy()
   })
-/*
-  it('Mutates store on remove click', () => {
-    const wrapper = shallowMount(RemoveButton, {
-      store,
-      localVue,
-      stubs: ['font-awesome-icon']
-    })
+
+  it('will remove selected component on confirmation', () => {
+    wrapper.findAll('.removeButton').at(0).trigger('click')
+    expect(wrapper.vm.$data.confirmedToRemove).toBe('Hello World')
+    expect(wrapper.vm.$data.showRemoveModal).toBeTruthy()
+    wrapper.vm.confirmedRemove()
+    expect(store.dispatch).toBeCalledWith('removeScript', 'Hello World')
+    expect(wrapper.vm.$data.confirmedToRemove).toBe('')
   })
-  */
 })

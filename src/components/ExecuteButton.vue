@@ -11,7 +11,6 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import store from '../store/store'
 import RunModal from '../components/RunModal'
 
 export default {
@@ -42,10 +41,8 @@ export default {
   methods: {
     execute () {
       if (this.doSave) {
-        store.dispatch('addParameters', this.form.parameters).then(() => {
-          store.dispatch('editScript', this.form).then(() => {
-            this.run()
-          })
+        this.$store.dispatch('saveParametersAndScripts', this.form).then(() => {
+          this.run()
         })
       } else {
         this.run()
