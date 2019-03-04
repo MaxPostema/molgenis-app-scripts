@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Scripts from './views/Scripts.vue'
+import ListScripts from './views/ListScripts.vue'
 import EditScript from './views/EditScript.vue'
 import NewScript from './views/NewScript.vue'
 
@@ -13,7 +13,7 @@ export default new Router({
     {
       path: '/',
       name: 'scripts',
-      component: Scripts
+      component: ListScripts
     },
     {
       path: '/add/',

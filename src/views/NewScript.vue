@@ -22,7 +22,7 @@
     <b-row class="mb-3">
       <b-col sm="4" class="border-right">
         <label>Result file extension</label>
-        <b-form-input id="name" type="text" v-model='form.resultFileExtension' placeholder="png"/>
+        <b-form-input id="name" type="text" v-model='form.resultFileExtension' placeholder=""/>
       </b-col>
       <b-col sm="4">
         <label class="mb-3">Generate security token</label>
@@ -37,13 +37,12 @@
       </b-col>
     </b-row>
     <button id="cancel-btn" class="btn btn-secondary mr-3" type="reset" @click.prevent="onCancel">Cancel</button>
-    <button :disabled="nameValidation" d="save-btn" class="btn btn-primary" type="submit" @click.prevent="onSubmit">Save</button>
+    <button :disabled="!nameValidation" d="save-btn" class="btn btn-primary" type="submit" @click.prevent="onSubmit">Save</button>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
-import store from '../store/store'
 import CodeEditor from '../components/CodeEditor'
 
 export default {
@@ -90,17 +89,16 @@ export default {
   methods: {
     onSubmit () {
       this.nameChanged = true
-      if (this.nameValidation && form.name !== '') {
-        store.dispatch('addParameters', this.form.parameters).then(() => {
-          store.dispatch('newScript', this.form).then(() => {
-            this.$router.push({ name: 'scripts' })
-          }, (error) => { this.onError(error) })
-        }, (error) => { this.onError(error) })
+      if (this.nameValidation && this.form.name !== '') {
+        this.$store.dispatch('newParametersAndScripts', this.form).then(() => {
+          this.$router.push({ name: 'scripts' })
+        }, (error) => {
+          this.onError(error)
+        })
       }
     },
-    onError (error) {
+    onError () {
       this.showValidationError = true
-      console.log('Error: ' + error.errors[0].message)
     },
     onCancel () {
       this.$router.push({ name: 'scripts' })

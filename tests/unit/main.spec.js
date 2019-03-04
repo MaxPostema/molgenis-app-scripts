@@ -24,7 +24,7 @@ describe('App.vue', () => {
     })
     expect(wrapper.vm.$data.showError).toBeFalsy()
 
-    actions.requestScripts().catch(()=>{
+    actions.requestScripts().catch(() => {
       localVue.nextTick(() => {
         expect(wrapper.vm.$data.showError).toBeTruthy()
         expect(actions.requestScripts).toBeCalled()

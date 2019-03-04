@@ -53,6 +53,24 @@ export default {
     }, () => {
     })
   },
+  saveParametersAndScripts ({ dispatch, commit } : any, form: any) {
+    return new Promise((resolve, reject) => {
+      dispatch('addParameters', form.parameters).then(() => {
+        dispatch('editScript', form).then(() => {
+          resolve()
+        }, (error: any) => { reject(error) })
+      }, (error: any) => { reject(error) })
+    })
+  },
+  newParametersAndScripts ({ dispatch, commit } : any, form: any) {
+    return new Promise((resolve, reject) => {
+      dispatch('addParameters', form.parameters).then(() => {
+        dispatch('newScript', form).then(() => {
+          resolve()
+        }, (error: any) => { reject(error) })
+      }, (error: any) => { reject(error) })
+    })
+  },
   addParameters ({ dispatch, commit } : any, parameters: any) {
     return new Promise((resolve, reject) => {
       api.get('/api/v2/sys_scr_ScriptParameter?num=10000').then((response: any) => {
