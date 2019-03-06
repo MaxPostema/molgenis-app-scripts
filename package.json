@@ -33,7 +33,7 @@
     "@vue/eslint-config-standard": "^4.0.0",
     "@vue/eslint-config-typescript": "^4.0.0",
     "@vue/test-utils": "^1.0.0-beta.29",
-    "babel-core": "6.26.3",
+    "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^10.0.1",
     "babel-jest": "23.6.0",
     "bootstrap-vue": "^2.0.0-rc.13",
@@ -42,6 +42,7 @@
     "jest-transform-stub": "^2.0.0",
     "ts-jest": "^24.0.0",
     "typescript": "3.3.3333",
+    "typescript-eslint-parser": "^22.0.0",
     "vue-jest": "^3.0.3",
     "vue-template-compiler": "^2.6.8"
   },
